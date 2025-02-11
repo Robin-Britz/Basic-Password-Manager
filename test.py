@@ -1,16 +1,35 @@
 import tkinter as tk
 
 root = tk.Tk()
-root.geometry("300x200")
+root.title("Password Manager")
+root.config(padx=50, pady=50)
 
-root.grid_columnconfigure(0, weight=1)  # Column 0 stretches
-root.grid_columnconfigure(1, weight=2)  # Column 1 stretches more
+form_frame = tk.Frame(root)
+form_frame.grid(column=0, row=1, columnspan=3, pady=20)
 
-root.grid_rowconfigure(0, weight=1)  # Row 0 stretches
-root.grid_rowconfigure(1, weight=2)  # Row 1 stretches more
+# Make columns evenly sized
+form_frame.columnconfigure(1, weight=1)
+form_frame.columnconfigure(2, weight=1)
 
-tk.Label(root, text="Resizable", bg="lightblue").grid(row=0, column=0, columnspan=2, sticky="nsew")
-tk.Button(root, text="Button 1").grid(row=1, column=0, sticky="nsew")
-tk.Button(root, text="Button 2").grid(row=1, column=1, sticky="nsew")
+# Labels (set width to align them)
+website_label = tk.Label(form_frame, text="Website:", width=15)
+website_label.grid(column=0, row=0)
+website_entry = tk.Entry(form_frame)
+website_entry.grid(column=1, row=0, columnspan=2, sticky="ew")
+
+email_username_label = tk.Label(form_frame, text="Email/Username:", width=15)
+email_username_label.grid(column=0, row=1)
+email_username_entry = tk.Entry(form_frame)
+email_username_entry.grid(column=1, row=1, columnspan=2, sticky="ew")
+
+password_label = tk.Label(form_frame, text="Password:", width=15)
+password_label.grid(column=0, row=2)
+password_entry = tk.Entry(form_frame, width=21)
+password_entry.grid(column=1, row=2, sticky="ew")
+password_generate_button = tk.Button(form_frame, text="Generate Password")
+password_generate_button.grid(column=2, row=2)
+
+add_button = tk.Button(form_frame, text="Add", width=36)
+add_button.grid(column=0, row=3, columnspan=3)
 
 root.mainloop()
