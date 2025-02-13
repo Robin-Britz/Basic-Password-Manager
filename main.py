@@ -2,8 +2,23 @@ import tkinter
 
 
 # PASSWORD GENERATOR
+chars = [
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+]
+
 
 # SAVE PASSWORD
+def save():
+    """Stores Site, Username, Password, pipe delimited"""
+    with open("data.txt", "a") as file:
+        file.write(f"{website_entry.get()} | {email_username_entry.get()} | {password_entry.get()}\n")
+
+    website_entry.delete(0, len(website_entry.get()))
+    password_entry.delete(0, len(password_entry.get()))
+    website_entry.focus()
+
 
 # UI SETUP
 root = tkinter.Tk()
@@ -20,12 +35,14 @@ website_label = tkinter.Label(root, text="Website:")
 website_label.grid(column=0, row=1)
 website_entry = tkinter.Entry(root)
 website_entry.grid(column=1, row=1, columnspan=2, sticky="ew")
+website_entry.focus()
 
 # USERNAME LABEL AND ENTRY
 email_username_label = tkinter.Label(root, text="Email/Username:")
 email_username_label.grid(column=0, row=2)
 email_username_entry = tkinter.Entry(root)
 email_username_entry.grid(column=1, row=2, columnspan=2, sticky="ew")
+email_username_entry.insert(0, "iThinkImAnAlien@gmail.com")
 
 # PASSWORD LABEL AND ENTRY
 password_label = tkinter.Label(root, text="Password:")
@@ -36,7 +53,7 @@ password_generate_button = tkinter.Button(root, text="Generate Password", border
 password_generate_button.grid(column=2, row=3)
 
 # ADD BUTTON
-add_button = tkinter.Button(root, text="Add", borderwidth=0.5)
+add_button = tkinter.Button(root, text="Add", borderwidth=0.5, command=save)
 add_button.grid(column=1, row=4, columnspan=2, sticky="ew")
 
 root.mainloop()
