@@ -1,5 +1,5 @@
 import tkinter
-
+from tkinter import messagebox
 
 # PASSWORD GENERATOR
 chars = [
@@ -15,6 +15,8 @@ def save():
     with open("data.txt", "a") as file:
         file.write(f"{website_entry.get()} | {email_username_entry.get()} | {password_entry.get()}\n")
 
+    tkinter.messagebox.showinfo("Saved", f"Entry added:\nWebsite: {website_entry.get()}\n"
+                                         f"Username: {email_username_entry.get()}\nPassword: {password_entry.get()}")
     website_entry.delete(0, len(website_entry.get()))
     password_entry.delete(0, len(password_entry.get()))
     website_entry.focus()
