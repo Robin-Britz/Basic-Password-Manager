@@ -1,3 +1,4 @@
+import json
 import tkinter
 from tkinter import messagebox
 import random
@@ -8,7 +9,7 @@ chars = [
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+',
-    '[', ']', '{', '}', '\\', '|', ';', ':', '\'', '"', ',', '<', '>', '.', '/',
+    '[', ']', '{', '}', '|', ';', ':', '"', ',', '<', '>', '.', '/',
     '?', '`', '~'
 ]
 
@@ -16,17 +17,38 @@ chars = [
 # SAVE PASSWORD
 def save():
     """Stores Site, Username, Password, pipe delimited"""
-    with open("data.txt", "a") as file:
-        file.write(f"{website_entry.get()} | {email_username_entry.get()} | {password_entry.get()}\n")
+    website = website_entry.get()
+    email = email_username_entry.get()
+    password = password_entry.get()
 
-    tkinter.messagebox.showinfo("Saved", f"Entry added:\nWebsite: {website_entry.get()}\n"
-                                         f"Username: {email_username_entry.get()}\nPassword: {password_entry.get()}")
-    website_entry.delete(0, len(website_entry.get()))
-    password_entry.delete(0, len(password_entry.get()))
-    website_entry.focus()
+    new_data = {website: {
+        "email": email,
+        "password": password,
+    }}
+
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showerror(title="Oops", message="Please make sure you haven't left any fields empty.")
+    else:
+        try:
+            with open("data.json", "r") as file:
+                data = json.load(file)
+                data.update(new_data)
+        except FileNotFoundError:
+            with open("data.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+        else:
+            with open("data.json", "w") as file:
+                json.dump(data, file, indent=4)
+        finally:
+            tkinter.messagebox.showinfo("Saved", f"Entry added:\nWebsite: {website}\n"
+                                                 f"Username: {email}\nPassword: {password}")
+            website_entry.delete(0, len(website))
+            password_entry.delete(0, len(password))
+            website_entry.focus()
 
 
 def generate_password():
+    """Generates a random 12 digit password"""
     password = ''
     for i in range(0, 13):
         letter = random.choice(chars)
