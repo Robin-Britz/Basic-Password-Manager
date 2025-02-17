@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import messagebox
+import random
 
 # PASSWORD GENERATOR
 chars = [
@@ -20,6 +21,17 @@ def save():
     website_entry.delete(0, len(website_entry.get()))
     password_entry.delete(0, len(password_entry.get()))
     website_entry.focus()
+
+
+def generate_password():
+    password = ''
+    for i in range(0, 13):
+        letter = random.choice(chars)
+        password += letter
+    password_entry.delete(0, len(password_entry.get()))
+    password_entry.insert(0, password)
+    password_entry.clipboard_clear()
+    password_entry.clipboard_append(password)
 
 
 # UI SETUP
@@ -51,7 +63,7 @@ password_label = tkinter.Label(root, text="Password:")
 password_label.grid(column=0, row=3)
 password_entry = tkinter.Entry(root)
 password_entry.grid(column=1, row=3, sticky="ew")
-password_generate_button = tkinter.Button(root, text="Generate Password", borderwidth=0.5)
+password_generate_button = tkinter.Button(root, text="Generate Password", borderwidth=0.5, command=generate_password)
 password_generate_button.grid(column=2, row=3)
 
 # ADD BUTTON
