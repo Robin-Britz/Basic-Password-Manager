@@ -14,9 +14,28 @@ chars = [
 ]
 
 
-# SAVE PASSWORD
+# SEARCH CREDENTIALS
+def search():
+    """Search for existing credentials"""
+    website = website_entry.get()
+    try:
+        with open("data.json", "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showerror(title="Error", message=f"No Data File Found.")
+        return
+    else:
+        if website not in data:
+            messagebox.showerror(title="Error", message=f"No Details Found For Website: {website}")
+        else:
+            messagebox.showinfo(title="Details Found", message=f"Website: {website}\n"
+                                                               f"Username: {data[f"{website}"]["email"]}\n"
+                                                               f"Password: {data[f"{website}"]["password"]}\n")
+
+
+# SAVE CREDENTIALS
 def save():
-    """Stores Site, Username, Password, pipe delimited"""
+    """Stores Site, Username, Password in JSON"""
     website = website_entry.get()
     email = email_username_entry.get()
     password = password_entry.get()
@@ -73,7 +92,7 @@ content.grid(column=1, row=0)
 website_label = tkinter.Label(root, text="Website:")
 website_label.grid(column=0, row=1)
 website_entry = tkinter.Entry(root)
-website_entry.grid(column=1, row=1, columnspan=2, sticky="ew")
+website_entry.grid(column=1, row=1, sticky="ew")
 website_entry.focus()
 
 # USERNAME LABEL AND ENTRY
@@ -94,5 +113,9 @@ password_generate_button.grid(column=2, row=3)
 # ADD BUTTON
 add_button = tkinter.Button(root, text="Add", borderwidth=0.5, command=save)
 add_button.grid(column=1, row=4, columnspan=2, sticky="ew")
+
+# SEARCH BUTTON
+add_button = tkinter.Button(root, text="Search", borderwidth=0.5, command=search)
+add_button.grid(column=2, row=1, columnspan=2, sticky="ew")
 
 root.mainloop()
